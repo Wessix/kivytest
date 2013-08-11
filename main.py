@@ -54,10 +54,8 @@ class GridWidget(FloatLayout):
     ############################################################
     def testfunction(self):
         #print ShowcaseApp.BilderlisteVorlaeufer
-        print App.Pfade
-        
-        
-    pass
+        #print App.Pfade
+        pass
 
 ##class testgridlayout(GridLayout):
 ##    pass
@@ -93,7 +91,10 @@ class ShowcaseApp(App):
         self.load_kv('showcase.kv') 
         root = self.root #= Carousel()
         test_grid_layout = root.ids.testgridlayout
-        #test_grid_layout2 = root.ids.testgridlayout2
+        App.box_layout_s2 = root.ids.boxlayouts2
+        App.test_grid_layout = test_grid_layout
+        App.haupt_box_layout = root.ids.hauptboxlayout
+        App.haupt_float_layout = root.ids.hauptfloatlayout
         
         #self.root.content = BoxLayout()
         
@@ -106,7 +107,7 @@ class ShowcaseApp(App):
 
         
         self.BubbleShowcase_instance = bubble.BubbleShowcase()
-         
+        print 'huihuuhuhhuhuuhhu', root.children 
         
         #root.add_widget(button_inst) # that worked only wrong position
         #XPosition = 100
@@ -114,6 +115,7 @@ class ShowcaseApp(App):
         for i in range(9):
             button = Button(background_normal = App.Pfade[i], background_down= 'pictures/bilder_oberflaeche/1361740537_Ball Green_mitHaken.png')
             #button.bind(on_release=bubble.BubbleShowcase.show_bubble)
+            
             test_grid_layout.add_widget(button)
             button.bind(on_release=self.bubble_anzeigen)
         
@@ -152,8 +154,13 @@ class ShowcaseApp(App):
 ##        return root
 
     def bubble_anzeigen(self, widget):
-        
-        bubble.BubbleShowcase.show_bubble(self.BubbleShowcase_instance, widget.pos)
+        #print dir(ShowcaseApp.build)
+        window = widget.get_root_window()
+        #print window.uid
+        print dir(App)
+        #print App.get_running_app()
+        Hauptapp = ShowcaseApp()
+        bubble.BubbleShowcase.show_bubble(self.BubbleShowcase_instance, App.haupt_float_layout, widget.pos, Hauptapp)
         #App.button_position = widget.pos
         
     def show_standard_widgets(self):
@@ -164,8 +171,20 @@ class ShowcaseApp(App):
 
     def show_gridwidget(self):
         return GridWidget()
-
     
+    def bubbleentfernen(self, zielwidget,bubb):
+        print 'bubblentfernen wird ausgefuert'
+        print zielwidget.children[0].children[0].children[0].children
+        print 'parent1',bubb.get_parent_window()
+        bubb.parent = None
+        #bubb.parent = zielwidget
+        print 'parent2',bubb.get_parent_window()
+        #remove_widget(bubb)
+        #zielwidget.remove_widget(bubb)
+        #zielwidget.clear_widgets()
+        
+
+       
 
 
 if __name__ == '__main__':
