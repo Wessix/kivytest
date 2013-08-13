@@ -113,7 +113,7 @@ class ShowcaseApp(App):
         #XPosition = 100
         #YPosition = 100
         for i in range(9):
-            button = Button(background_normal = App.Pfade[i], background_down= 'pictures/bilder_oberflaeche/1361740537_Ball Green_mitHaken.png')
+            button = Button(background_normal = App.Pfade[i], background_down= 'pictures/bilder_oberflaeche/1361740537_Ball Green_mitHaken.png', mipmap= True)
             #button.bind(on_release=bubble.BubbleShowcase.show_bubble)
             
             test_grid_layout.add_widget(button)
@@ -177,7 +177,7 @@ class ShowcaseApp(App):
         print zielwidget.children[0].children[0].children[0].children
         print 'parent1',bubb.get_parent_window()
         bubb.parent = None
-        #bubb.parent = zielwidget
+        bubb.parent = zielwidget
         print 'parent2',bubb.get_parent_window()
         #remove_widget(bubb)
         #zielwidget.remove_widget(bubb)

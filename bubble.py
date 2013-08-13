@@ -69,7 +69,8 @@ class BubbleShowcase(FloatLayout):
             #bubb.children[1].children[3].bind(on_press=bubb.clear_widgets())
             #App.bubb = bubb
             #self.add_widget(bubb)
-            self.bubb.pos = widget_position 
+            self.bubb.pos = widget_position
+            
             zielwidget.add_widget(bubb)
             #self.bubb.pos = widget_position
                    
