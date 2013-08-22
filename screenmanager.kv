@@ -6,71 +6,83 @@
 
     
     
-<CustomScreen@Screen>:
-    #id: ScreenmanagerPopup
+<CustomScreen>:
+    id: ScreenmanagerPopupScreen
     hue: 1
     canvas:
         Color:
             hsv: self.hue, .5, .3
         Rectangle:
             size: self.size
+            
 
     Label:
         font_size: 42
         text: root.name
 
-    Button:
-        text: 'Next screen'
-        size_hint: None, None
-        pos_hint: {'right': 1}
-        size: 150, 50
-        on_release: root.manager.current = root.manager.next()
-
-    Button:
-        text: 'Previous screen'
-        size_hint: None, None
-        size: 150, 50
-        on_release: root.manager.current = root.manager.previous()
-
     BoxLayout:
-        size_hint: .5, None
-        height: 250
-        pos_hint: {'center_x': .5}
+##        size_hint: .5, None
+##        height: 250
+##        pos_hint: {'center_x': .5}
         orientation: 'vertical'
 
         Button:
-            text: 'Use SlideTransition with "up" direction'
-            on_release: root.manager.transition = SlideTransition(direction="up")
+            text: 'Zurueck'
+            size_hint: 1, 0.1
+            pos_hint: {'top': 1}
+            #size: 150, 50
+            on_press: root.manager.transition = SlideTransition(direction="up")
+            on_release: root.manager.current = root.manager.next()
 
         Button:
-            text: 'Use SlideTransition with "down" direction'
-            on_release: root.manager.transition = SlideTransition(direction="down")
+            opacity: 0
 
         Button:
-            text: 'Use SlideTransition with "left" direction'
-            on_release: root.manager.transition = SlideTransition(direction="left")
+            text: 'Weiter'
+            size_hint: 1, 0.1
+            pos_hint: {'bottom': 1}
+            #size: 150, 50
+            on_press: root.manager.transition = SlideTransition(direction="down")
+            on_release: root.manager.current = root.manager.previous()
 
-        Button:
-            text: 'Use SlideTransition with "right" direction'
-            on_release: root.manager.transition = SlideTransition(direction="right")
-
-        Button:
-            text: 'Use SwapTransition'
-            on_release: root.manager.transition = SwapTransition()
-
-        Button:
-            text: 'Use WipeTransition'
-            on_release: root.manager.transition = WipeTransition()
-
-        Button:
-            text: 'Use FadeTransition'
-            on_release: root.manager.transition = FadeTransition()
+##    BoxLayout:
+##        size_hint: .5, None
+##        height: 250
+##        pos_hint: {'center_x': .5}
+##        orientation: 'vertical'
+##
+##        Button:
+##            text: 'Use SlideTransition with "up" direction'
+##            on_release: root.manager.transition = SlideTransition(direction="up")
+##
+##        Button:
+##            text: 'Use SlideTransition with "down" direction'
+##            on_release: root.manager.transition = SlideTransition(direction="down")
+##
+##        Button:
+##            text: 'Use SlideTransition with "left" direction'
+##            on_release: root.manager.transition = SlideTransition(direction="left")
+##
+##        Button:
+##            text: 'Use SlideTransition with "right" direction'
+##            on_release: root.manager.transition = SlideTransition(direction="right")
+##
+##        Button:
+##            text: 'Use SwapTransition'
+##            on_release: root.manager.transition = SwapTransition()
+##
+##        Button:
+##            text: 'Use WipeTransition'
+##            on_release: root.manager.transition = WipeTransition()
+##
+##        Button:
+##            text: 'Use FadeTransition'
+##            on_release: root.manager.transition = FadeTransition()
 
     
-<CustomScreenManager@ScreenManager>:
+<CustomScreenManager>:
     CustomScreen:            
         
-
 
 
 

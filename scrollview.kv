@@ -1,0 +1,58 @@
+<CustomScrollviewPopupContent>:
+  
+        
+        #id: CSPopup
+        #on_parent: if self.parent: root.data = [str(i) for i in range(50)]
+        #content: popupcontent
+        
+    BoxLayout:
+        id: popupcontent
+        on_parent: if self.parent: root.data = [str(i) for i in range(50)]
+        orientation: 'vertical'
+
+        
+            
+            
+##            Button:
+##                size_hint: 1, .1
+##                text: 'populate'
+##                on_release: root.data = [str(i) for i in range(450)]
+            
+        ScrollView:
+                
+            RelativeLayout:
+                size_hint: 1, None
+                height: content.height
+                GridLayout:
+                    cols: 1
+                    id: content
+                    size_hint: 1, None
+                    height: self.minimum_height
+
+                                                 
+
+                
+<CustomButton2>
+    size_hint: 1, None
+    height: 100
+
+    Button: 
+        text: 'button1' 
+        height: 100  
+    Button: 
+        text: 'button2' 
+        height: 100  
+    BoxLayout: 
+        orientation: 'vertical' 
+        height: 100 
+                            
+        Button: 
+            text: '+' 
+            height: (100 /2) 
+        Button: 
+            text: '-' 
+            height: (100 /2) 
+    Button: 
+        text: 'button4' 
+        height: 100 
+

@@ -4,6 +4,7 @@ from kivy.lang import Builder
 Builder.load_file('screenmanager.kv')
 
 class CustomScreenManager(ScreenManager):
+        
 	pass
 
 class CustomScreen(Screen):
