@@ -192,13 +192,25 @@ class LoginScreen(FloatLayout):
         self.ProduktOrganizerInstanz.add_widget(Button(text= 'test', on_release = self.listeaktualisieren))
         #self.ProduktOrganizerInstanz.ids.ProduktlisteButtonHinzufuegen.on_release = self.listeaktualisieren
         self.ProduktOrganizerInstanz.add_widget(Button(text= 'manuell', on_release = self.itemmanuellhinzufuegen))
+        self.ProduktOrganizerInstanz.add_widget(Button(on_release = self.positionenzeigen))
 
     def itemmanuellhinzufuegen(self,widget):
         self.CustomScrollviewProduktOrganizerInstanz = CustomScrollviewProduktOrganizer()
-        print dir(self.CustomScrollviewProduktOrganizerInstanz.ids.content2)
+        #print dir(self.CustomScrollviewProduktOrganizerInstanz.ids.content2.children)
         self.CustomScrollviewProduktOrganizerInstanz.ids.content2.clear_widgets()
+        self.testButtonx = Button(text='testbutton', size_hint = (1,1))
+        #self.CustomScrollviewProduktOrganizerInstanz.ids.content2.add_widget(self.testButtonx)
+        print dir(self.CustomScrollviewProduktOrganizerInstanz.ids)
         
-        self.CustomScrollviewProduktOrganizerInstanz.ids.content2.add_widget(Button(text='testbutton'))
+        
+
+
+    def positionenzeigen(self,widget):
+        print self.testButtonx.pos
+        print self.testButtonx.size
+        self.listeaktualisieren(self)
+        
+        
 
         
         
@@ -206,10 +218,10 @@ class LoginScreen(FloatLayout):
         
     def listeaktualisieren(self, widget):
         print 'listeacktualisieren wurde ausgefuert'
-        self.ProduktOrganizer = ProduktOrganizer()
+        self.CustomScrollviewProduktOrganizer = CustomScrollviewProduktOrganizer()
         #print [str(i) for i in range(30)]
         #self.CustomScrollviewProduktOrganizerInstanz.data = ['0','1','2','3','4']
-        self.ProduktOrganizer.data = [str(i) for i in App.HauptListeDictonaries]
+        self.CustomScrollviewProduktOrganizer.data = [str(i) for i in App.HauptListeDictonaries]
         
         
         
@@ -481,7 +493,7 @@ class LoginScreen(FloatLayout):
         TischNr = widget.id
         PopupFloatLayout = FloatLayout(size_hint=(1, 1))
         
-        self.PopupScrollview = CustomScrollviewPopup()
+        self.PopupScrollview = CustomScrollviewPopupContent()
         self.PopupScrollviewItem = CustomButton2()
         self.PopupScrollview.data = [str(i) for i in range(10)]
         #content = self.PopupScrollview.ids.content
