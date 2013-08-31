@@ -1,11 +1,14 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import kivy
 kivy.require('1.1.3')
 
 import os
+
 import pickle
 import gc
 
+from kivy.garden.filechooserthumbview import *
 from kivy.factory import Factory
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -36,6 +39,7 @@ from kivy.graphics import Color, Rectangle
 
 from screenmanager import CustomScreenManager, CustomScreen
 from customscrollviewpopup import CustomScrollviewPopupContent, CustomButton2
+from produktorganizer import ProduktOrganizer, PopupBildAuswaehlenProduktorganizer, CustomScrollviewItem, CustomScrollviewProduktOrganizer
 #from kivy.lang import Builder
 #Builder.load_file('screenmanager.kv')
 
@@ -101,8 +105,10 @@ class LoginScreen(FloatLayout):
         self.Pfade = []
         for i in self.BilderListeVorlaeufer:
             Pfad = os.path.join('pictures', i)
-            self.Pfade.append(Pfad)
+            if os.path.isfile(Pfad) == True:
+                self.Pfade.append(Pfad)
         self.HauptCarousel = Carousel(scroll_timeout = 100)
+        App.Pfade = self.Pfade
         self.add_widget(self.HauptCarousel)
         ####################################################################################################
         ### Erste Seite im HauptCarousel momentan mit den produktbildern
@@ -111,7 +117,7 @@ class LoginScreen(FloatLayout):
         self.HauptCarousel.FloatLayout.GridLayout = GridLayout(cols=3, pos_hint={'x': 0,'y': 0}, size_hint=[1,0.9])
         self.HauptCarousel.FloatLayout.add_widget(self.HauptCarousel.FloatLayout.GridLayout)
         for i in range(9):
-            button = Button(background_normal = self.Pfade[i], background_down= 'pictures/bilder_oberflaeche/1361740537_Ball Green_mitHaken.png', mipmap= True)
+            button = Button(background_normal = self.Pfade[i], background_down= 'bilder_oberflaeche/1361740537_Ball Green_mitHaken.png', mipmap= True)
             self.HauptCarousel.FloatLayout.GridLayout.add_widget(button)
 ##        self.HauptCarousel.FloatLayout.GridLayout.add_widget(Button(text='test'))
 ##        self.HauptCarousel.FloatLayout.GridLayout.add_widget(Button(text='test2'))
@@ -173,50 +179,96 @@ class LoginScreen(FloatLayout):
         self.tischerstellung(Zielwidget,AnzahlTische, Auswahlliste, BackgroundcolorListe)
        
         
-                              
+        self.ProduktOrganizerInstanz = ProduktOrganizer()
+        self.HauptCarousel.add_widget(self.ProduktOrganizerInstanz)
+        ButtonHinzufuegen = self.ProduktOrganizerInstanz.ids.ProduktlisteButtonHinzufuegen
+        ButtonHinzufuegen.on_release = self.produkthinzufuegen
+        self.PopupInst = PopupBildAuswaehlenProduktorganizer()
+        
+        popup = self.PopupInst.ids.a
+        self.ProduktOrganizerInstanz.ids.ProduktBildAuswaehlen.on_release = popup.open
+        
+        self.ProduktOrganizerItemInstanz = CustomScrollviewItem()
+        self.ProduktOrganizerInstanz.add_widget(Button(text= 'test', on_release = self.listeaktualisieren))
+        #self.ProduktOrganizerInstanz.ids.ProduktlisteButtonHinzufuegen.on_release = self.listeaktualisieren
+        self.ProduktOrganizerInstanz.add_widget(Button(text= 'manuell', on_release = self.itemmanuellhinzufuegen))
+
+    def itemmanuellhinzufuegen(self,widget):
+        self.CustomScrollviewProduktOrganizerInstanz = CustomScrollviewProduktOrganizer()
+        print dir(self.CustomScrollviewProduktOrganizerInstanz.ids.content2)
+        self.CustomScrollviewProduktOrganizerInstanz.ids.content2.clear_widgets()
+        
+        self.CustomScrollviewProduktOrganizerInstanz.ids.content2.add_widget(Button(text='testbutton'))
+
+        
+        
+        
+        
+    def listeaktualisieren(self, widget):
+        print 'listeacktualisieren wurde ausgefuert'
+        self.ProduktOrganizer = ProduktOrganizer()
+        #print [str(i) for i in range(30)]
+        #self.CustomScrollviewProduktOrganizerInstanz.data = ['0','1','2','3','4']
+        self.ProduktOrganizer.data = [str(i) for i in App.HauptListeDictonaries]
+        
+        
+        
+        
+    def produkthinzufuegen(self):
+        
+        NeuesDict ={}
+    
+        WertEingabeFeldBezeichnung = self.ProduktOrganizerInstanz.ids.EingabeFeldBezeichnung.text
+        WertEingabeFeldPreis = self.ProduktOrganizerInstanz.ids.EingabeFeldPreis.text
+##        StatusCheckBoxVerkauf = self.ProduktOrganizerInstanz.ids.CheckBoxVerkauf.active
+        WertSpinnerKategorie = self.ProduktOrganizerInstanz.ids.SpinnerKategorie.text
+        filechooser = self.PopupInst.ids.filechooser
+        DateiAuswahl = (str(filechooser.selection))[((str(filechooser.selection)).find('/pictures')):-2]
+        print 'hallo', WertEingabeFeldBezeichnung, WertEingabeFeldPreis,DateiAuswahl,WertSpinnerKategorie
+        NeuesDict = {'Bezeichnung':WertEingabeFeldBezeichnung,
+                     'Preis':WertEingabeFeldPreis,
+                     'Bild':DateiAuswahl,
+                     'Kategorie':WertSpinnerKategorie}
+
+        print 'len(App.HauptListeDictonaries)', (len(App.HauptListeDictonaries))
+        if len(App.HauptListeDictonaries)<1:
+            App.HauptListeDictonaries.append(NeuesDict)
+            print 'Fall 1'
+        else:
+            for i in range(len(App.HauptListeDictonaries[:])):
+                print 'App.HauptListeDictonaries[i][Bezeichnung] ist', App.HauptListeDictonaries[i]['Bezeichnung']
+                Bezeichnungdict = str(App.HauptListeDictonaries[i]['Bezeichnung'])
+                Bezeichnungneuesdict = str(NeuesDict['Bezeichnung'])
+                if Bezeichnungdict  == Bezeichnungneuesdict:
+                   
+                    Treffer = True
+                    break
+                else:
+                    Treffer = False
+            if Treffer == True:
+                #print 'Dieses Produkt existiert schon'
+                ButtonVerstanden = Button(text='Verstanden')
+                popup = Popup(title='Dieses Produkt existiert bereits ',
+                              size_hint = (0.5, 0.25),
+                              content= ButtonVerstanden)
+                popup.open()
+                ButtonVerstanden.on_release = popup.dismiss
+            else:
+                App.HauptListeDictonaries.append(NeuesDict)
+
+       
+                    
+   
+
+        print len(App.HauptListeDictonaries)
+        for index, item in enumerate(App.HauptListeDictonaries):
+            print index, item
+        
+        
+        
 
 
-        #####################################################################
-        ### Versuch eines Dropdown Buttons
-        ### Try to implement a dropdown Button, probably better than a Spinner
-        ###############################
 
-####        Auswahlliste = ["Bestellung", "Abrechnung", "Best. Aendern", "Bennenen"]
-####        BackgroundcolorListe = [(1,0,0,1),(0,1,0,1),(0,0,1,1),(1,1,0,1)]
-####        self.dropdownobjects = []
-####        for i in range(12):
-####            TischButtonText = "T " + str(i+1)
-####            DropdownObjekt = CustomDropDown() #von kovak hinzugefuegt
-####            DropdownObjektButton = CustomButton(text = TischButtonText, background_color = (201./255.,99./255.,23./255.,1))
-####            cGridLayout.add_widget(DropdownObjektButton)
-####            DropdownObjektButton.bind(on_release=DropdownObjekt.open)
-####            self.dropdownobjects.append(DropdownObjekt) #von kovak hinzugefuegt
-####
-####            for x in range(len(Auswahlliste)):
-####
-####                DropdownUnterbutton = Button(text=Auswahlliste[x], font_size = 15, size_hint_y=None, height=60, background_color = BackgroundcolorListe[x])
-####                DropdownObjekt.add_widget(DropdownUnterbutton)
-####
-####                #print' button', i, 'unterbutton', x
-####
-####
-####
-####            DropdownObjektButton.text= TischButtonText
-####            TischButtondict = {'Nummer':(i),'Objekt':DropdownObjektButton}
-####            self.Tischliste.append(TischButtondict)
-
-
-
-##        for i in range(12):
-##            TischButtonText = "T " + str(i+1)
-##            #TischButton = Button(text=(''), on_release = self.tischmanipulieren)
-##            TischButton = Spinner(text='', values = ("Bestellung", "Abrechnung", "Best. Aendern", "Bennenen"))
-##            cGridLayout.add_widget(TischButton)
-##            TischButton.text= TischButtonText
-##            TischButtondict = {(i),TischButton}
-##            self.Tischliste.append(TischButtondict)
-##        for index, item in enumerate(self.Tischliste):
-##                print index, item
 
     def DropdownbuttonCreator(self):
         Auswahlliste = ["Tisch +", "Tisch -", "Spalte + ", "Spalte -", "Reihe + ", "Reihe -"]
@@ -227,8 +279,8 @@ class LoginScreen(FloatLayout):
         #DropdownObjektButton = ToggleButton(text="Menue",
                                             size_hint=[1,1],
                                             background_color = (0.8, 0.8, 0.00, 1),
-                                            background_normal='pictures/white2.png',
-                                            background_down='pictures/white3.png')
+                                            background_normal='bilder_oberflaeche/white2.png',
+                                            background_down='bilder_oberflaeche/white3.png')
         #self.CustomLayout.add_widget(DropdownObjektButton)
         DropdownObjektButton.bind(on_release=DropdownObjekt.open)
         self.DropdownObjects.append(DropdownObjekt)
@@ -236,8 +288,8 @@ class LoginScreen(FloatLayout):
 
                 DropdownUnterbutton = Button(text=Auswahlliste[x], font_size = 15, size_hint_y=None, height=60,
                                              background_color = BackgroundcolorListe[x],
-                                             background_normal='pictures/white2.png',
-                                             background_down='pictures/white3.png',
+                                             background_normal='bilder_oberflaeche/white2.png',
+                                             background_down='bilder_oberflaeche/white3.png',
                                              opacity = 0.8,
                                              on_release = Aktionsliste[x])
                 DropdownObjekt.add_widget(DropdownUnterbutton)
@@ -267,8 +319,8 @@ class LoginScreen(FloatLayout):
             #DropdownObjektButton = CustomButton(text = TischButtonText,
             DropdownObjektButton = ToggleButton(text = TischButtonText,
                                                 group='Tische',
-                                                background_normal='pictures/white2.png',
-                                                background_down='pictures/white4.png',
+                                                background_normal='bilder_oberflaeche/white2.png',
+                                                background_down='bilder_oberflaeche/white4.png',
                                                 background_color = (0.79, 0.39, 0.09, 0.6))
             Zielwidget.add_widget(DropdownObjektButton)
             DropdownObjektButton.bind(on_release=DropdownObjekt.open)
@@ -283,8 +335,8 @@ class LoginScreen(FloatLayout):
                                              font_size = 15,
                                              size_hint_y=None,
                                              height=60,
-                                             background_normal='pictures/white2.png',
-                                             background_down='pictures/white3.png',
+                                             background_normal='bilder_oberflaeche/white2.png',
+                                             background_down='bilder_oberflaeche/white3.png',
                                              background_color = BackgroundcolorListe[x],
                                              on_release = Aktionsliste[x])
                 DropdownObjekt.add_widget(DropdownUnterbutton)
@@ -424,19 +476,14 @@ class LoginScreen(FloatLayout):
         
         
     def bestellung(self, widget):
-        x = ListProperty([])
-        x = CustomScrollviewPopupContent
-        x.data = ListProperty([str(i) for i in range(10)])
-        print 'x.data', x.data
-        print CustomScrollviewPopupContent.data
-        #CustomScrollviewPopupContent.data = ListProperty([str(i) for i in range(10)])
-        print '2ens', CustomScrollviewPopupContent.data
+        
         
         TischNr = widget.id
         PopupFloatLayout = FloatLayout(size_hint=(1, 1))
         
-        self.PopupScrollview = CustomScrollviewPopupContent()
+        self.PopupScrollview = CustomScrollviewPopup()
         self.PopupScrollviewItem = CustomButton2()
+        self.PopupScrollview.data = [str(i) for i in range(10)]
         #content = self.PopupScrollview.ids.content
         #item = self.PopupScrollviewItem
                
@@ -458,7 +505,7 @@ class LoginScreen(FloatLayout):
         self.PopupScrollview.size_hint = [1.05,1.017]
         self.PopupScrollview.center = popup.center
         PopupFloatLayout.add_widget(self.PopupScrollview)
-             
+        self.PopupScrollview.ids.populate.on_release = self.kasse
        
         popup.open()
     
@@ -474,20 +521,22 @@ class LoginScreen(FloatLayout):
         #return CustomScrollviewPopupContent()
         
 
-    def kasse(self, widget):
-        print ' size is:', widget.size
-        print 'parent ist', widget.parent
-        print ' parent size is:', widget.parent.size
-        print 'uebrig', widget.parent.size[1] - widget.size[1]
-        x = (widget.parent.size[1] - widget.size[1])/100
-        print 'uebrig/(hoehechildern', x
-        print 'size hint muesste sein', (30/x)
-        print 'window.parent.parent', widget.parent.parent, widget.parent.parent.size
-        print 'window.parent.parent.parent', widget.parent.parent.parent, widget.parent.parent.parent.size
-        print 'window.parent.parent.parent.parent', widget.parent.parent.parent.parent, widget.parent.parent.parent.parent.size,
+    def kasse(self):
+        
+        self.PopupScrollview.data = [str(i) for i in range(30)]
+        #print dir(CustomScrollviewPopupContent().ids.viewitems)
+        #y.ids.content.clear_widgets()
+##        x.data = ListProperty([str(i) for i in range(10)])
+##        print 'x.data', x.data
+##        
+##        print CustomScrollviewPopupContent.data
+##        CustomScrollviewPopupContent.data = x.data
+##        print '2ens', CustomScrollviewPopupContent.data
+        
 
     def groesse(self,widget):
         print 'die buttongroesse ist:', widget.size
+
     
 
     def abrechnung(self, widget):
@@ -495,7 +544,7 @@ class LoginScreen(FloatLayout):
         PopupFloatLayout = FloatLayout()       
         self.ScreenmanagerPopup = CustomScreenManager()
         self.ScreenPopup = CustomScreen
-        print (self.ScreenmanagerPopup.children)
+        
         for x in xrange(4):
             self.ScreenmanagerPopup.add_widget(self.ScreenPopup(name='Screen %d' % x))
         #popup = Popup(title='Abrechnung für ' + str(TischNr),
@@ -540,6 +589,8 @@ class LoginScreen(FloatLayout):
         popup.open()
         
         pass
+
+      
 
 
 
@@ -587,7 +638,7 @@ class CustomLayout(FloatLayout):
         with self.canvas.before:
             Color(1,0,0,0.2) # green; colors range from 0-1 instead of 0-255
             self.rect = Rectangle(
-                            source='pictures/bilder_oberflaeche/tischmanagerboden1024_768.jpg',
+                            source='bilder_oberflaeche/tischmanagerboden1024_768.jpg',
                             size=self.size,
                             pos=self.pos)
             
@@ -604,6 +655,15 @@ class CustomLayout(FloatLayout):
 
 
 class BonierungsprogrammApp(App):
+    App.my_index = 0
+    App.my_index2 = 0
+    App.Pfade = 0
+    App.Namensliste = ['Cola','Wasser','Bier','Wein']
+    #App.HauptListeDictonaries  = ListProperty([])
+    App.HauptListeDictonaries = []
+    TestDict = {'Bezeichnung':'testitem','Preis':'testpreis','Bild':'testpildbfad','Kategorie':'Testkategorie'}
+    App.HauptListeDictonaries.append(TestDict)
+    
 
 ##    def __init__(self, **kwargs):
 ##        pass

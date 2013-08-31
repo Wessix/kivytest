@@ -7,10 +7,14 @@
         
     BoxLayout:
         id: popupcontent
-        on_parent: if self.parent: root.data = [str(i) for i in range(50)]
+        #on_parent: if self.parent: root.data = [str(i) for i in range(50)]
         orientation: 'vertical'
 
-        
+        Button:
+            id: populate
+            size_hint: 1, .1
+            text: 'populate'
+            
             
             
 ##            Button:
@@ -35,24 +39,94 @@
 <CustomButton2>
     size_hint: 1, None
     height: 100
+    orientation: 'vertical' 
+    BoxLayout:
+        orientation: 'horizontal'   
+    
 
-    Button: 
-        text: 'button1' 
-        height: 100  
-    Button: 
-        text: 'button2' 
-        height: 100  
-    BoxLayout: 
-        orientation: 'vertical' 
-        height: 100 
-                            
+        Button:
+            id: Button1CustomButton2
+            text:  app.Namensliste[int(app.my_index)] if (int (app.my_index)) < len(app.Namensliste)  else ''
+            height: 100
+            mipmap: True
+            background_normal: app.Pfade[int(app.my_index)] if (int (app.my_index)) < len(app.Pfade)  else 'pictures/bilder_oberflaeche/1361813865_Help.png'
+            #background_down: app.Pfade[int(app.my_index)] if (int (app.my_index)) < len(app.Pfade)  else 'pictures/bilder_oberflaeche/1361813865_Help.png'
+            color: (1, 1, 1, 1)
+            halign: 'center'
+            valign: 'bottom'
+            text_size: self.size
+        BoxLayout: 
+            orientation: 'vertical' 
+            height: 100 
+
+            BoxLayout: 
+                orientation: 'horizontal'                    
+                Label: 
+                    text: '€'
+                    halign: 'left'
+                    valign: 'middle'
+                    height: (100 /2)
+                    text_size: self.size
+                Label: 
+                    text: '9,99'
+                    halign: 'right'
+                    valign: 'middle'
+                    height: (100 /2)
+                    text_size: self.size
+                    color: (1.00, 0.00, 0.00, 1)
+            BoxLayout: 
+                orientation: 'horizontal'
+                Label: 
+                    text: '∑'
+                    halign: 'left'
+                    valign: 'middle'
+                    height: (100 /2)
+                    size_hint: 0.15,None 
+                    text_size: self.size
+                Label: 
+                    text: '18888,98'
+                    halign: 'right'
+                    valign: 'middle'
+                    height: (100 /2)
+                    text_size: self.size
+                    color: (1.00, 0.39, 0.39, 1)
+        
+            
         Button: 
-            text: '+' 
-            height: (100 /2) 
-        Button: 
-            text: '-' 
-            height: (100 /2) 
-    Button: 
-        text: 'button4' 
-        height: 100 
+            text: 'Optionen' 
+            height: 100
+            color: (0,0,0,1)
+            background_color: (1,1,0,1)
+            background_normal: 'pictures/bilder_oberflaeche/white3.png'
+            background_down: 'pictures/bilder_oberflaeche/white2.png'
+            
+            
+            
+        BoxLayout: 
+            orientation: 'vertical' 
+            height: 100 
+                                
+            Button: 
+                text: '+' 
+                height: (100 /2)
+                background_color:(0,1,0,1)
+            Button: 
+                text: '-' 
+                height: (100 /2)
+                background_color:(1,0,0,1)
+                background_down: 'pictures/bilder_oberflaeche/white3.png'
+
+    HSeparator:
+            
+
+[HSeparator@Widget]:
+    size_hint_y: None
+    height: 1
+    canvas:
+        Color:
+            rgba: .8, .8, .8, .3
+        Rectangle:
+            size: self.width, 1
+            pos: self.x, self.center_y
+    
 
