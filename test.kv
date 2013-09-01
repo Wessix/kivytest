@@ -1,0 +1,227 @@
+
+# -*- coding: utf_8 -*-
+
+
+<ProduktOrganizer>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.07
+
+            Label:
+                id: NamensLabel
+                text: 'Produkt[sup][color=#ff6f19ff]Organizer[/sup][/b][/color]'
+                markup: True
+                halign: 'left'
+                valign: 'top'
+                font_size: '30sp'
+                text_size: self.size
+                size_hint: 0.6,1
+                #pos_hint: {x
+            Spinner:
+                text: "Alle"
+                values: "Mittag-Essen", "Getränke", "%Alc%Getränke", "Essen Alltime", "Alle"
+                size_hint: 0.4, 1
+                #halign: 'right'
+                #valign: 'top'
+                
+                
+        BoxLayout:
+            size_hint: 1, 0.93
+            orientation: 'vertical'
+
+            
+            
+                    
+            
+
+            
+##            BoxLayout:
+##                size_hint: 1,0.15
+##                Button:
+##                    text: "+"
+##                    size_hint: 0.1,1
+##                Button:
+##                    text:"A-Z"
+##                    size_hint: 0.1,1
+##                Button:
+##                    text: "Z-A"
+##                    size_hint: 0.1,1
+##                    
+##                CheckBox:
+##                    size_hint: 0.1,1
+##                Spinner:
+##                    size_hint: 0.2,1
+                    
+  
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, 0.1
+                Label:
+                    text: 'ID'
+                    font_size: 12
+                    size_hint: 0.1,1
+                Label:
+                    text: 'Bezeichnung'
+                    font_size: 12
+                    size_hint: 0.4,1
+                Label:
+                    font_size: 12
+                    size_hint: 0.1,1
+                    text: 'Bild'
+                Label:
+                    text: 'Preis €'
+                    font_size: 12
+                    size_hint: 0.1,1
+                   
+                AnchorLayout:
+                    size_hint: 0.1,1
+                    #orientation: 'horizontal'
+                    anchor_x: "center"
+                    anchor_y: "center"
+                    CheckBox:
+                        #opacity: 0.5
+                        
+                    Label:
+                        text: 'Verkauf'
+                        font_size: 12
+                Label:
+                    text: 'Kategorie'
+                    font_size: 12
+                    size_hint: 0.2,1
+
+
+            BoxLayout:
+                size_hint: 1,0.1
+                Button:
+                    id: ProduktlisteButtonHinzufuegen
+                    text: '+'
+                    size_hint: 0.1,1
+                    
+                TextInput:
+                    id: EingabeFeldBezeichnung
+                    size_hint: 0.4,1
+                Button:
+                    id: ProduktBildAuswaehlen
+                    #background_normal: 'bilder_oberflaeche/1361813865_Help_black.png'
+                    mipmap: True
+                    size_hint: 0.1 ,1
+                    height: self.width
+                    Image:
+                        size_hint: None, None
+                        source: 'bilder_oberflaeche/1361813865_Help_black.png'
+                        size: ProduktBildAuswaehlen.size
+                        pos: ProduktBildAuswaehlen.pos
+                    
+                    
+                TextInput:
+                    id: EingabeFeldPreis
+                    size_hint: 0.2,1
+##                CheckBox:
+##                    id: CheckBoxVerkauf
+##                    size_hint: 0.1,1
+                Spinner:
+                    id: SpinnerKategorie
+                    size_hint: 0.2,1
+                    values: "Mittag-Essen", "Getränke", "AlcGetränke", "Essen Alltime"
+                    font_size: 14
+
+       
+
+             
+
+            
+            CustomScrollviewProduktOrganizer:
+                size_hint: 1,0.9
+
+            
+
+            
+                    
+                
+                    
+
+            #Button:
+
+<SpinnerOption>:
+    font_size: 14
+
+
+<CustomScrollviewProduktOrganizer>:
+    orientation: 'vertical'
+    
+    Button:
+        size_hint: 1, 0.1
+        text: 'clear'
+        on_release: content2.clear_widgets()
+        on_release: print root
+        on_release: print type(root)
+        
+    Button:
+        size_hint: 1, 0.1 
+        text: 'populate'
+        on_release: root.data = [str(i) for i in range(2)]
+
+    Button:
+        size_hint: 1, 0.1
+        text: 'populate2'
+        on_release: root.data = [str(i) for i in range(3)]
+        
+    
+    ScrollView:
+        RelativeLayout:
+            size_hint: 1, None
+            height: content2.height
+            GridLayout:
+                id: content2
+                #on_parent: self.clear_widgets()               
+                
+                cols: 1
+                
+                size_hint: 1, None
+                height: self.minimum_height
+                
+
+                Button:
+                    size: 100,100
+                    text: 'Button1'
+                    size_hint: 1, None
+                    
+                    
+                Button:
+                    size: 100,100
+                    text: 'Button2'
+                    size_hint: 1, None
+
+                Button:
+                    size: 100,100
+                    text: 'Button2'
+                    size_hint: 1, None
+                Button:
+                    size: 100,100
+                    text: 'Button2'
+                    size_hint: 1, None
+                Button:
+                    size: 100,100
+                    text: 'Button2'
+                    size_hint: 1, None
+                Button:
+                    size: 100,100
+                    text: 'Button2'
+                    size_hint: 1, None
+                Button:
+                    size: 100,100
+                    text: 'Button2'
+                    size_hint: 1, None
+                Button:
+                    size: 100,100
+                    text: 'Button2'
+                    size_hint: 1, None
+                Button:
+                    size: 100,100
+                    text: 'Button2'
+                    size_hint: 1, None
+                    
