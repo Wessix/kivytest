@@ -56,8 +56,8 @@ class LoginScreen(FloatLayout):
         self.ButtonHinzufuegen = self.ProduktOrganizerInstanz.ids.ProduktlisteButtonHinzufuegen
         self.ButtonHinzufuegen.on_release = self.inputdata2
 
-        #self.Box.add_widget(self.ProduktOrganizerInstanz)                   ########## recomment this in
-        self.Box.add_widget(self.CustomScrollviewProduktOrganizerInstanz)    #################  comment this out
+        self.Box.add_widget(self.ProduktOrganizerInstanz)                   ########## recomment this in
+        #self.Box.add_widget(self.CustomScrollviewProduktOrganizerInstanz)    #################  comment this out
         
 
     def inputdata(self, widget):

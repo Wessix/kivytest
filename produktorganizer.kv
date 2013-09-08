@@ -19,11 +19,27 @@
                 font_size: '30sp'
                 text_size: self.size
                 size_hint: 0.6,1
-                #pos_hint: {x
+            Button:
+                id: SpeicherButton
+                text: '[b]S[/b]'
+                markup: True
+                font_size: 34
+                background_normal: 'bilder_oberflaeche/upload_orange.png'
+                background_down: 'bilder_oberflaeche/upload.png'
+                size_hint: 0.15, 1
+            Button:
+                id: LadeButton
+                text: '[b]L[/b]'
+                markup: True
+                font_size: 34
+                background_normal: 'bilder_oberflaeche/download_orange.png'
+                background_down: 'bilder_oberflaeche/download.png'
+                size_hint: 0.15, 1
             Spinner:
+                id: SpinnerProduktOrganizer
                 text: "Alle"
-                values: "Mittag-Essen", "Getränke", "%Alc%Getränke", "Essen Alltime", "Alle"
-                size_hint: 0.4, 1
+                values: "Mittag-Essen", "Getraenke", "AlcGetraenke", "Essen Alltime", "Alle"
+                size_hint: 0.2, 0.95
                 #halign: 'right'
                 #valign: 'top'
                 
@@ -98,11 +114,17 @@
                 seperator_color: (0.95, 0.42, 0.09, 1)
 
             BoxLayout:
-                size_hint: 1,0.1
+                size_hint: 1, 0.065
+                      
                 Button:
                     id: ProduktlisteButtonHinzufuegen
                     text: '+'
+                    #background_normal: 'bilder_oberflaeche/buttonbackground_normal_orangerand.png'
+                    #background_normal: 'bilder_oberflaeche/ButtonRahmen_orange.png'
+                    background_normal: 'bilder_oberflaeche/buttonbackground_normal.png' 
                     size_hint: 0.1,1
+                    
+                    
                     
                 TextInput:
                     id: EingabeFeldBezeichnung
@@ -110,14 +132,17 @@
                 Button:
                     id: ProduktBildAuswaehlen
                     #background_normal: 'bilder_oberflaeche/1361813865_Help_black.png'
+                    background_normal: 'bilder_oberflaeche/buttonbackground_normal.png' 
                     mipmap: True
-                    size_hint: 0.1 ,1
-                    height: self.width
+                    size_hint: 0.1 , 1
+                    
+                    
                     Image:
-                        size_hint: None, None
-                        source: 'bilder_oberflaeche/1361813865_Help_black.png'
-                        size: ProduktBildAuswaehlen.size
-                        pos: ProduktBildAuswaehlen.pos
+                        id: BildItem
+                        size_hint: 1, 1
+                        source: 'bilder_oberflaeche/1361813865_Help_orange.png'
+                        size: self.parent.size
+                        pos: self.parent.pos
                     
                     
                 TextInput:
@@ -128,15 +153,20 @@
 ##                    size_hint: 0.1,1
                 Spinner:
                     id: SpinnerKategorie
+                    background_normal: 'bilder_oberflaeche/buttonbackground_normal.png' 
                     size_hint: 0.2,1
-                    values: "Mittag-Essen", "Getränke", "AlcGetränke", "Essen Alltime"
+                    values: "Mittag-Essen", "Getraenke", "AlcGetraenke", "Essen Alltime"
                     font_size: 14
+                    #option_cls: SpinnerOptions
 
             HSeparatorProduktOrganizer:
                 seperator_color: (0.95, 0.42, 0.09, 1)
 
+             
+
             
             CustomScrollviewProduktOrganizer:
+                id: custScrlInst
                 size_hint: 1,0.9
 
             
@@ -146,14 +176,36 @@
                 
                     
 
-            #Button:
+            
 
 <SpinnerOption>:
     font_size: 14
+    #background_normal: 'bilder_oberflaeche/ButtonRahmen_orange_schwarzerHintergrund.png'
+    
+<SpinnerOptions>
+    id: SpinnerOptions
+    background_normal: 'bilder_oberflaeche/buttonbackground_normal.png'
+    
  
         
         
 <CustomScrollviewProduktOrganizer>:
+    orientation: 'vertical'
+    
+##    Button:
+##        text: 'clear'
+##        on_release: content2.clear_widgets()
+##        on_release: print root
+##        on_release: print type(root)
+        
+####    Button:
+####        text: 'populate'
+####        on_release: root.data = [str(i) for i in range(5)]
+####
+####    Button:
+####        text: 'populate2'
+####        on_release: root.data = [str(i) for i in range(10)]
+        
     
     ScrollView:
         RelativeLayout:
@@ -161,25 +213,28 @@
             height: content2.height
             GridLayout:
                 id: content2
+####                on_parent: self.clear_widgets()               
+                
                 cols: 1
                 
                 size_hint: 1, None
                 height: self.minimum_height
+                
 
-                CustomScrollviewItem:
-                    
-                    
-                CustomScrollviewItem:
-                    
-                    
-                CustomScrollviewItem:
-
-                CustomScrollviewItem:
-
-                CustomScrollviewItem:
-                CustomScrollviewItem:
-                CustomScrollviewItem:
-                CustomScrollviewItem:
+##                CustomScrollviewItem:
+##                    
+##                    
+##                CustomScrollviewItem:
+##                    
+##                    
+##                CustomScrollviewItem:
+##
+##                CustomScrollviewItem:
+##
+##                CustomScrollviewItem:
+##                CustomScrollviewItem:
+##                CustomScrollviewItem:
+##                CustomScrollviewItem:
 ##                CustomScrollviewItem:
 ##                CustomScrollviewItem:
 ##                CustomScrollviewItem:
@@ -204,24 +259,25 @@
     height: 50
     BoxLayout:
         ToggleButton:
-            #text: str(app.my_index2) 
+            text: str(app.AuswahlHauptliste[app.my_index2]['ID']) #if (int (app.my_index2)) < len(app.HauptListeDictonaries)  else ''#str(app.my_index2) 
             font_size: 16
             #background_color: 0,0,0,0
             #background_color_down: 1,1,1,1
+            background_normal: 'bilder_oberflaeche/ButtonRahmen_orange.png'
             group: id
             halign: 'left'
             valign: 'middle'
             size_hint: 0.1, 1
         Label:
-            #text: str(app.HauptListeDictonaries[app.my_index2]['Bezeichnung']) if (int (app.my_index2)) < len(app.HauptListeDictonaries)  else ''
+            text: str(app.AuswahlHauptliste[app.my_index2]['Bezeichnung'])# if (int (app.my_index2)) < len(app.HauptListeDictonaries)  else ''
             font_size: 16
             size_hint: 0.4, 1
            
         Image:
-            #source: str(app.HauptListeDictonaries[app.my_index2]['Bild']) if (int (app.my_index2)) < len(app.HauptListeDictonaries)  else ''
+            source: str(app.AuswahlHauptliste[app.my_index2]['Bild']) #if (int (app.my_index2)) < len(app.HauptListeDictonaries)  else ''
             size_hint: 0.1, 1
         Label:
-            #text: str(app.HauptListeDictonaries[app.my_index2]['Preis']) if (int (app.my_index2)) < len(app.HauptListeDictonaries)  else ''
+            text: str(app.AuswahlHauptliste[app.my_index2]['Preis']) #if (int (app.my_index2)) < len(app.HauptListeDictonaries)  else ''
             font_size: 16
             size_hint: 0.1, 1
 
@@ -234,14 +290,144 @@
 ##            state: 'down'
                                    
         Label:
-            #text: str(app.HauptListeDictonaries[app.my_index2][Kategorie]) if (int (app.my_index2)) < len(app.HauptListeDictonaries)  else ''
+            text: str(app.AuswahlHauptliste[app.my_index2]['Kategorie']) if app.AuswahlHauptliste != [] else str(app.AuswahlHauptliste[app.my_index2]['Kategorie'])#(int (app.my_index2)) < len(app.HauptListeDictonaries)  else ''
             font_size: 16
             size_hint: 0.2, 1
 
     #HSeparator:
 
+<PopupDateiAuswaehlenProduktorganizer>
+    
+   
+    PopupBildAuswaehlenProduktorganizer:
+        id: b
+        rootpath: "Produktlisten"
+        title: 'Bitte Datei waehlen'
+        
+        
+               
+    
+
         
                         
+
+                    
+<PopupBildAuswaehlenProduktorganizer>
+    rootpath: "pictures/"
+    title: 'Bitte Produktbild waehlen'
+    
+    Popup:
+        
+        size_hint: 0.9,0.9
+        id: a
+        title: root.title
+        #size: ('300dp', '300dp')
+        BoxLayout:
+            id: LayoutPopup
+            
+            #size_hint: 1,0.9
+            #size: root.size
+            #pos: root.pos
+            orientation: "vertical"
+            FileChooserThumbView:
+            #FileChooserIconView:
+                id: filechooser
+                #show_hidden: True
+                #rootpath: "pictures/"
+                rootpath: root.rootpath
+                thumbsize: 300
+                
+
+            BoxLayout:
+                
+                size_hint: 1,None
+                Button:
+                    text: "Verlassen"
+                    size_hint: 0.5,None
+                    on_release: filechooser.selection = ''
+                    on_release: a.dismiss()
+                Button:
+                    id: OkButtonFilechooser
+                    text: "Ok"
+                    size_hint: 0.5,None
+                    #on_release: print filechooser.path,filechooser.selection
+                    #on_release: print ((str(filechooser.selection)).find('/pictures'))
+                    on_release: filechooser.selection = filechooser.selection
+                    on_release: a.dismiss()
+                    
+<PersonalOrganizer>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.07
+
+            Label:
+                id: NamensLabelPersonal
+                text: 'Personal[sup][color=ff00fc]Organizer[/sup][/b][/color]'
+                markup: True
+                halign: 'left'
+                valign: 'top'
+                font_size: '30sp'
+                text_size: self.size
+                size_hint: 0.6,1
+                
+##            Spinner:
+##                text: "Alle"
+##                values: "Mittag-Essen", "Getraenke", "AlcGetraenke", "Essen Alltime", "Alle"
+##                size_hint: 0.4, 1
+##                #halign: 'right'
+##                #valign: 'top'
+##                
+##                
+##        BoxLayout:
+##            size_hint: 1, 0.93
+##            orientation: 'vertical'
+
+        HSeparatorProduktOrganizer:
+            seperator_color: (1.00, 0.00, 0.99, 1)
+            
+        Button:
+            size_hint: 1, 0.93
+
+<ZeitOrganizer>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.07
+
+            Label:
+                id: NamensLabelZeit
+                text: 'Zeit[sup][color=1ecdff]Organizer[/sup][/b][/color]'
+                markup: True
+                halign: 'left'
+                valign: 'top'
+                font_size: '30sp'
+                text_size: self.size
+                size_hint: 0.6,1
+                
+##            Spinner:
+##                text: "Alle"
+##                values: "Mittag-Essen", "Getraenke", "AlcGetraenke", "Essen Alltime", "Alle"
+##                size_hint: 0.4, 1
+##                #halign: 'right'
+##                #valign: 'top'
+##                
+##                
+##        BoxLayout:
+##            size_hint: 1, 0.93
+##            orientation: 'vertical'
+
+        HSeparatorProduktOrganizer:
+            seperator_color: (0.12, 1.20, 1.00, 1)
+            
+        Button:
+            size_hint: 1, 0.93
+                    
+
 <HSeparatorProduktOrganizer@Widget>:
     id: HSeparatorProduktOrganizer
     seperator_color: [0.8,0.8,0.8,1]
@@ -253,38 +439,4 @@
         Rectangle:
             size: self.width, 2
             pos: self.x, self.center_y
-                    
-<PopupBildauswaehlenProduktorganizer>
-    Popup:
-        size_hint: 0.9,0.9
-        id: a
-        title: 'Bitte Produktbild wählen' 
-        #size: ('300dp', '300dp')
-        BoxLayout:
-            #size_hint: 1,0.9
-            #size: root.size
-            #pos: root.pos
-            orientation: "vertical"
-            FileChooserThumbView:
-            #FileChooserIconView:
-                id: filechooser
-                #show_hidden: True
-                rootpath: "pictures/"
-                thumbsize: 300
-                
 
-            BoxLayout:
-                size_hint: 1,None
-                Button:
-                    text: "Verlassen"
-                    size_hint: 0.5,None
-                    on_release: filechooser.selection = ''
-                    on_release: a.dismiss()
-                Button:
-                    text: "Ok"
-                    size_hint: 0.5,None
-                    #on_release: print filechooser.path,filechooser.selection
-                    #on_release: print ((str(filechooser.selection)).find('/pictures'))
-                    on_release: filechooser.selection = filechooser.selection
-                    on_release: a.dismiss()
-                    

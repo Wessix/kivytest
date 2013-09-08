@@ -1,20 +1,16 @@
 <CustomScrollviewPopupContent>:
   
-        
+    
         #id: CSPopup
         #on_parent: if self.parent: root.data = [str(i) for i in range(50)]
         #content: popupcontent
         
     BoxLayout:
         id: popupcontent
-        #on_parent: if self.parent: root.data = [str(i) for i in range(50)]
+        #on_parent: app.my_index = -1
         orientation: 'vertical'
-
-        Button:
-            id: populate
-            size_hint: 1, .1
-            text: 'populate'
-            
+        
+       
             
             
 ##            Button:
@@ -23,38 +19,75 @@
 ##                on_release: root.data = [str(i) for i in range(450)]
             
         ScrollView:
-                
-            RelativeLayout:
+            ScrollView:
                 size_hint: 1, None
-                height: content.height
-                GridLayout:
-                    cols: 1
-                    id: content
+                height: relative.height
+                
+                
+                RelativeLayout:
+                    id: relative
                     size_hint: 1, None
-                    height: self.minimum_height
+                    height: content.height
+                    GridLayout:
+                        cols: 1
+                        id: content
+                        size_hint: 1, None
+                        height: self.minimum_height
+                        
 
                                                  
 
                 
 <CustomButton2>
+    customID: customID
+    id: CustomButton2ID
+    produktid: (str(app.AuswahlHauptliste[int(app.my_index)]['ID']) if app.AuswahlHauptliste!= [] else '')
+    temptext: ''
     size_hint: 1, None
     height: 100
-    orientation: 'vertical' 
+    orientation: 'vertical'
+    
     BoxLayout:
+        
         orientation: 'horizontal'   
     
 
-        Button:
-            id: Button1CustomButton2
-            text:  app.Namensliste[int(app.my_index)] if (int (app.my_index)) < len(app.Namensliste)  else ''
-            height: 100
-            mipmap: True
-            background_normal: app.Pfade[int(app.my_index)] if (int (app.my_index)) < len(app.Pfade)  else 'pictures/bilder_oberflaeche/1361813865_Help.png'
-            #background_down: app.Pfade[int(app.my_index)] if (int (app.my_index)) < len(app.Pfade)  else 'pictures/bilder_oberflaeche/1361813865_Help.png'
-            color: (1, 1, 1, 1)
-            halign: 'center'
-            valign: 'bottom'
-            text_size: self.size
+        AnchorLayout:
+            Button:
+             
+                id: Button1CustomButton2
+                text:  str(app.AuswahlHauptliste[int(app.my_index)]['Bezeichnung']) if app.AuswahlHauptliste!= [] else ''
+                height: 100
+                mipmap: True
+                background_normal: str(app.AuswahlHauptliste[int(app.my_index)]['Bild']) if app.AuswahlHauptliste != [] else '' #if (int (app.my_index)) < len(app.HauptListeDictonaries)  else 'bilder_oberflaeche/1361813865_Help.png'
+                #background_down: 
+                color: (1, 1, 1, 1)
+                halign: 'center'
+                valign: 'bottom'
+                text_size: self.size
+                on_press: root.temptext = self.text
+                on_press: self.valign= 'middle'
+                on_press: self.text = 'ID\n'+(root.produktid)
+                on_press: self.font_size = 28
+                on_release: self.text = root.temptext
+                on_release: self.valign= 'bottom'
+                on_release: self.font_size = 22
+
+            Image:
+                id: SchattenLabelZaehler
+                size_hint: None, None
+                opacity: 0
+                source: 'bilder_oberflaeche/black.png'
+                size: (LabelZaehler.width/2),(LabelZaehler.height/2)
+                #background_color: 000000
+                
+            Label:
+                id: LabelZaehler
+                wert: ''
+                text: '[b][color=00ff00]'+ str(self.wert) + '[/b][/color]'
+                markup: True
+                font_size: 34
+                
         BoxLayout: 
             orientation: 'vertical' 
             height: 100 
@@ -67,8 +100,8 @@
                     valign: 'middle'
                     height: (100 /2)
                     text_size: self.size
-                Label: 
-                    text: '9,99'
+                Label:   
+                    text: '%s€' % (str(app.AuswahlHauptliste[int(app.my_index)]['Preis'])) if app.AuswahlHauptliste != [] else '' #if (int (app.my_index)) < len(app.HauptListeDictonaries)  else ''
                     halign: 'right'
                     valign: 'middle'
                     height: (100 /2)
@@ -92,31 +125,118 @@
                     color: (1.00, 0.39, 0.39, 1)
         
             
-        Button: 
+        Button:
+            id: customID
             text: 'Optionen' 
             height: 100
             color: (0,0,0,1)
             background_color: (1,1,0,1)
             background_normal: 'pictures/bilder_oberflaeche/white3.png'
             background_down: 'pictures/bilder_oberflaeche/white2.png'
-            
+            #on_release: print app.Bestellungsliste
+            #on_release: OptionenPopupBestellungen.ids.PopupBestellungen.open
+            on_release: app.AktuelleAuswahlBestellungsliste = str(app.AuswahlHauptliste[int(app.my_index)]['Bezeichnung']) if app.AuswahlHauptliste!= [] else ''
             
             
         BoxLayout: 
             orientation: 'vertical' 
             height: 100 
                                 
-            Button: 
+            Button:
+                id: ButtonMehr
                 text: '+' 
                 height: (100 /2)
                 background_color:(0,1,0,1)
+                on_release: LabelZaehler.opacity = 1
+                on_release: app.AktuelleBestellungsZaehler = LabelZaehler.wert if LabelZaehler.wert != '' else app.AktuelleBestellungsZaehler
+                on_release: app.AktuelleBestellungsZaehler = app.AktuelleBestellungsZaehler + 1
+                on_release: SchattenLabelZaehler.opacity = 0.5
+                on_release: app.AktuelleBestellungProduktAnzahlzaehler = 0 if (root.produktid) != (app.Bestellungsliste[-1]['ProduktID']) and LabelZaehler.wert == '' else app.AktuelleBestellungProduktAnzahlzaehler
+                on_release: app.AktuelleBestellungProduktAnzahlzaehler =  LabelZaehler.wert if (root.produktid) != (app.Bestellungsliste[-1]['ProduktID']) and LabelZaehler.wert != '' else app.AktuelleBestellungProduktAnzahlzaehler
+                on_release: app.AktuelleBestellungProduktAnzahlzaehler = int(str(app.AktuelleBestellungProduktAnzahlzaehler)) + 1
+                on_release: LabelZaehler.wert = int(str(app.AktuelleBestellungProduktAnzahlzaehler))
+                on_release: app.Bestellungsliste.append({'AktuelleBestellungsZaehler':app.AktuelleBestellungsZaehler,'ProduktID':(root.produktid)})
+                on_release: print 'app.AktuelleBestellungProduktAnzahlzaehler', app.AktuelleBestellungProduktAnzahlzaehler
+                                                                                
+                
+                                
+                
             Button: 
                 text: '-' 
                 height: (100 /2)
                 background_color:(1,0,0,1)
                 background_down: 'pictures/bilder_oberflaeche/white3.png'
+                on_release: app.AktuelleBestellungProduktAnzahlzaehler  = LabelZaehler.wert if LabelZaehler.wert != '' else 0
+                on_release: LabelZaehler.wert = (int(app.AktuelleBestellungProduktAnzahlzaehler) - 1) if app.AktuelleBestellungProduktAnzahlzaehler != 0 else LabelZaehler.wert
+                on_release: LabelZaehler.wert = 0 if app.AktuelleBestellungProduktAnzahlzaehler == 0 else LabelZaehler.wert
+                on_release: app.AktuelleBestellungProduktAnzahlzaehler = 0 if app.AktuelleBestellungProduktAnzahlzaehler == 0 else app.AktuelleBestellungProduktAnzahlzaehler
+                on_release: app.AktuelleBestellungProduktAnzahlzaehler = (app.AktuelleBestellungProduktAnzahlzaehler -1) if  app.AktuelleBestellungProduktAnzahlzaehler != 0 else app.AktuelleBestellungProduktAnzahlzaehler
+                on_release: SchattenLabelZaehler.opacity = 0.9 if LabelZaehler.wert == 0 else 0.5
+                on_release: SchattenLabelZaehler.opacity = 0 if LabelZaehler.wert == 0 else 0.5
+                on_release: LabelZaehler.opacity = 0 if LabelZaehler.wert == 0 else 1
 
+                
     HSeparator:
+
+[ScrollviewButton@ToggleButton]
+    size_hint: 1,None
+    height:50
+    #text: 
+
+<OptionenPopupBestellungen>:
+    id: PopupBestellungen
+    neuerwert: neuerwert
+    title: 'Bitte Optionen setzen'
+    content: OptionsPopupContent
+    size_hint: 0.9,0.9
+    BoxLayout:
+        size_hint: 1,1
+        id: OptionsPopupContent
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint: 1,0.1
+            Button:
+                size_hint: 0.5,1
+                on_release: print neuerwert
+            Label:
+                size_hint:0.5,1
+                text: 'waehlen fuer Welche items'
+                font_size: 14
+            
+        BoxLayout:
+            orientation: 'horizontal'
+            GridLayout:
+                cols: 2
+                Label:
+                    text: 'Item1'
+                CheckBox:
+                Label:
+                    text: 'Item2'
+                CheckBox:
+                Label:
+                    text: 'Item1'
+                CheckBox:
+
+            
+                
+            ScrollView:
+                ScrollView:
+                    size_hint: 1, None
+                    height: relativeOptionsScrollview.height
+                    
+                    
+                    RelativeLayout:
+                        id: relativeOptionsScrollview
+                        size_hint: 1, None
+                        height: contentOptionsScrollview.height
+                        GridLayout:
+                            cols: 1
+                            id: contentOptionsScrollview
+                            size_hint: 1, None
+                            height: self.minimum_height
+                            
+                            
+   
             
 
 [HSeparator@Widget]:

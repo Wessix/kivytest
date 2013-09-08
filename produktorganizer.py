@@ -8,6 +8,7 @@ from kivy.properties import ListProperty
 from kivy.factory import Factory
 from kivy.uix.popup import Popup
 from kivy.uix.filechooser import FileChooserIconView
+from kivy.uix.spinner import Spinner
 
 #from kivy.uix.popup import Popup
 
@@ -22,33 +23,55 @@ class ProduktOrganizer(BoxLayout):
 
 class CustomScrollviewProduktOrganizer(BoxLayout):
     data  = ListProperty([])
+     
     
     
     def on_data(self, instance, value):
+        App.my_index2 = -1
         
         content_add = self.ids.content2.add_widget
-        print 'self.ids.content2', self.ids.content2
-        print 'self',self
-        print dir(self)
-        self.ids.content2.clear_widgets()
+        #print 'self.ids.content2', self.ids.content2
+        #print 'self',self
+        #print dir(self)
+        #print 'self in on data', self
+        
+        #ProduktOrganizerInstanz.ids.custScrlInst.clear_widgets
+        
+        #self.data = [str(i) for i in range(3)]
+        
+        
+        #import pdb; pdb.set_trace()
         #print 'vor der Schleife app.my_index',App.my_index
         #print 'len(app.Pfade)', len(App.Pfade) 
         
         for item in value:
-            #print item
-            #print value
+            App.my_index2 = (App.my_index2 +1)
+            print item
+            print value
             #print self
-            #App.my_index2 = item
+            
             #print 'Es wurde die Schleife ausgefuert:  in der S app.my_index',App.my_index
             
-            content_add(CustomScrollviewItem(height=25))
-            content_add(Button(text='test', height=50))
+            content_add(CustomScrollviewItem(size_hint= (1,None),height=25))
+            #content_add(Button(text='test', height=50))
+    pass
     
 
 class CustomScrollviewItem(BoxLayout):
     pass
 
 class PopupBildAuswaehlenProduktorganizer(Popup):
+    pass
+
+class PersonalOrganizer(BoxLayout):
+    pass
+
+class ZeitOrganizer(BoxLayout):
+    pass
+
+class PopupDateiAuswaehlenProduktorganizer(BoxLayout):
+    pass
+class SpinnerOptions(Spinner):
     pass
         
       
