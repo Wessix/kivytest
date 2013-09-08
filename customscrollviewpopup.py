@@ -50,7 +50,7 @@ class CustomButton2(BoxLayout):
     wert = NumericProperty(None)
 
 class OptionenPopupBestellungen(Popup):
-    neuerwert = NumericProperty(None)
+    
     pass
 
     
